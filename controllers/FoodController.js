@@ -26,6 +26,7 @@ const getFoodHandler = (req, res) => {
  * @param res
  */
 const postFoodHandler = (req, res) => {
+	console.log(req.body)
 	if (!req.body.name || !req.body.desc || !req.body.imgUrl) {
 		res.resError('Error Params!')
 	}
@@ -43,17 +44,23 @@ const postFoodHandler = (req, res) => {
  * @param res
  */
 const updateFoodHandler = (req, res) => {
-	if (!res.body.id) res.resError('Lack Of ID')
+	if (!req.body.id) res.resError('Lack Of ID')
 	let config = {}
-	Object.keys(res.body).forEach(item => {
+	Object.keys(req.body).forEach(item => {
 		if (item !== 'id') {
-			config[item] = res.body[item]
+			config[item] = req.body[item]
 		}
 	})
 	
-	Food.findOneAndUpdate({id: res.body.id}, {$set: config}, (err,res) =>{
+	Food.findOneAndUpdate({id: req.body.id}, {$set: config}, (err, data) =>{
 		if (err) res.resError('Update Food Error')
-		res.resSuccess(res.toString())
+		data = JSON.parse(JSON.stringify(data))
+		res.resBody.data.name = data.name
+		res.resBody.data.imgUrl = data.imgUrl
+		res.resBody.data.id = data.id
+		res.resBody.data.desc = data.desc
+		res.resBody.msg = 'Update Success'
+		res.json(res.resBody)
 	})
 }
 
@@ -63,11 +70,16 @@ const updateFoodHandler = (req, res) => {
  * @param res
  */
 const deleteFoodHandler = (req, res) => {
-
+	if (!req.body.id) res.resError('Lack Of ID')
+	Food.findOneAndDelete({id:req.body.id}, (err)=>{
+		if (err) res.resError('Delete Fail')
+		res.resSuccess('Delete Success!')
+	})
 }
 
 module.exports = {
 	getFoodHandler,
 	postFoodHandler,
-	updateFoodHandler
+	updateFoodHandler,
+	deleteFoodHandler
 }
