@@ -11,6 +11,13 @@ class	ResponseBody {
 		this.msg = msg
 		return JSON.parse(JSON.stringify(this))
 	}
+	
+	responseSuccess (msg) {
+		this.code = 0
+		this.data = {}
+		this.msg = msg
+		return JSON.parse(JSON.stringify(this))
+	}
 }
 
 module.exports = ResponseBody

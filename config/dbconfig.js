@@ -1,1 +1,1 @@
-module.exports = 'mongodb://localhost:27017/food'
+module.exports = 'mongodb://localhost:27017/kitchen'

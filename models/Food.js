@@ -1,17 +1,11 @@
 const mongoose  = require('mongoose')
-
-let foodSchema = mongoose.Schema({
-	name: String,
-	desc: String,
-	imgUrl: String
+const uuidV1 = require('uuid/v1')
+const foodSchema = mongoose.Schema({
+	name: {type: String, default: 'No Name'},
+	desc: {type: String, default: 'No Desc'},
+	imgUrl: {type: String, default: 'No ImgUrl'},
+	id: {type: String, default: uuidV1},
+	date: {type: String, default: Date.now}
 })
-
-foodSchema.methods.test = () => {
-	console.log('hello i am lily')
-}
-
-foodSchema.methods.addFood = () => {
-
-}
 
 module.exports = mongoose.model('Food', foodSchema)
